@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float horsePower = 100f;
     [SerializeField] private float turnSpeed = 5.0f;
     [SerializeField] private float speed;
+    [SerializeField] private float rpm;
     private float horizontalInput;
     private float verticalInput;
     private string horizontalAxis;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;
     [SerializeField] private GameObject centerOfMass;
     [SerializeField] private TextMeshProUGUI speedometerText;
+    [SerializeField] private TextMeshProUGUI rpmText;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +32,15 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+        CalcSpeedAndRPM();
+    }
+
+    private void CalcSpeedAndRPM()
+    {
         speed = Mathf.Round(playerRb.velocity.magnitude * 3.6f);
-        speedometerText.SetText("Speed : "+speed+" km/h");
+        rpm = Mathf.Round((speed % 30) * 40);
+        speedometerText.SetText("Speed : " + speed + " km/h");
+        rpmText.SetText("RPM : " + rpm);
     }
 
     private void SetAxes()
