@@ -12,10 +12,12 @@ public class PlayerController : MonoBehaviour
     private string horizontalAxis;
     private string verticalAxis;
     private Rigidbody playerRb;
+    [SerializeField] private GameObject centerOfMass;
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        playerRb.centerOfMass = centerOfMass.transform.position;
         SetAxes();
     }
 
