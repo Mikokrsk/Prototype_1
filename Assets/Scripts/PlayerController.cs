@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject centerOfMass;
     [SerializeField] private TextMeshProUGUI speedometerText;
     [SerializeField] private TextMeshProUGUI rpmText;
+    [SerializeField] private List<WheelCollider> allWheels;
+    [SerializeField] private int wheelsOnGround;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Move();
+        if (IsOnGround())
+        {
+            Move();
+        }
         CalcSpeedAndRPM();
     }
 
@@ -64,5 +69,25 @@ public class PlayerController : MonoBehaviour
         // transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
         playerRb.AddRelativeForce(Vector3.forward * verticalInput * horsePower);
         transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
+    }
+
+    private bool IsOnGround()
+    {
+        wheelsOnGround = 0;
+        foreach (WheelCollider wheel in allWheels)
+        {
+            if (wheel.isGrounded)
+            {
+                wheelsOnGround++;
+            }
+        }
+        if (wheelsOnGround == 4)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
