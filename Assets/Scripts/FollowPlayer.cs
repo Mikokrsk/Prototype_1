@@ -5,21 +5,28 @@ using UnityEngine.UI;
 
 public class FollowPlayer : MonoBehaviour
 {
-    
-    public GameObject Camera;
+    public GameObject mainCamera;
+    public GameObject secondCamera;
+    public GameObject player;
 
+    void Start()
+    {
+        mainCamera.SetActive(true);
+        secondCamera.SetActive(false);
+    }
+
+    void LateUpdate()
+    {
+        transform.position = player.transform.position;
+    }
 
     // Update is called once per frame
-    void LateUpdate()
-    {        
-        transform.position = transform.position ;
-    }
-    private void Update()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            Camera.SetActive(true);
-            gameObject.SetActive(false);
+            secondCamera.SetActive(!secondCamera.active);
+            mainCamera.SetActive(!mainCamera.active);
         }
     }
 }

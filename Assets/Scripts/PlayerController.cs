@@ -4,22 +4,49 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 12.0f;
-    public float turnSpeed = 5.0f;
-    private float horixontalInput;
-    private float forwardInput;
+    // public float speed = 12.0f;
+   [SerializeField] private float horsePower = 100f;
+   [SerializeField] private float turnSpeed = 5.0f;
+    private float horizontalInput;
+    private float verticalInput;
+    private string horizontalAxis;
+    private string verticalAxis;
+    private Rigidbody playerRb;
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerRb = GetComponent<Rigidbody>();
+        SetAxes();
     }
 
+
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        horixontalInput = Input.GetAxis("Horizontal");
-        forwardInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.forward*Time.deltaTime*speed*forwardInput);
-        transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horixontalInput) ;
+        Move();
+    }
+
+    private void SetAxes()
+    {
+        if (gameObject.CompareTag("Player_1"))
+        {
+            horizontalAxis = "Horizontal1";
+            verticalAxis = "Vertical1";
+        }
+        else
+        {
+            horizontalAxis = "Horizontal2";
+            verticalAxis = "Vertical2";
+        }
+    }
+
+    private void Move()
+    {
+        horizontalInput = Input.GetAxis(horizontalAxis);
+        verticalInput = Input.GetAxis(verticalAxis);
+        // transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
+        playerRb.AddRelativeForce(Vector3.forward * verticalInput * horsePower);
+        transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
     }
 }
